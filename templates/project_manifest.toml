@@ -1,0 +1,27 @@
+version = "2026.03"
+fragments = [
+  "core/base",
+  "core/git-workflow",
+  "core/architecture",
+  "core/error-handling",
+  "core/python",
+]
+features = [
+  "conport",
+  "design-first-collaboration",
+  "grace",
+]
+stacks = [
+  "python",
+  "fastapi",
+]
+local_overrides = [
+  "docs/ai/project-rules.md",
+]
+optional_local_overrides = [
+  "docs/ai/private-rules.local.md",
+]
+
+[metadata]
+project_name = "replace-me"
+notes = "Project-specific AI configuration using manifest-only dependencies."

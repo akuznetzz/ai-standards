@@ -1,0 +1,11 @@
+[features]
+conport = ["tools/conport"]
+design-first-collaboration = ["process/design-first-collaboration"]
+grace = ["knowledge/grace"]
+
+[stacks]
+python = ["stacks/python"]
+fastapi = ["stacks/fastapi"]
+react = ["stacks/react"]
+postgres = ["stacks/postgres"]
+vue = ["stacks/vue"]
