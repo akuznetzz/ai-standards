@@ -50,6 +50,33 @@ def test_render_contains_expected_markers(tmp_path: Path) -> None:
     assert "Private local override." in result.content
 
 
+def test_java_spring_stack_can_be_rendered(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        'version = "2026.03"\n'
+        'fragments = ["core/base", "core/architecture", "core/error-handling"]\n'
+        'features = ["conport"]\n'
+        'stacks = ["java-spring"]\n'
+        'local_overrides = ["docs/ai/project-rules.md"]\n'
+        "\n"
+        "[metadata]\n"
+        'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## Java Spring Stack" in result.content
+    assert "Prefer constructor injection over field injection." in result.content
+
+
 def test_written_file_matches_rendered_content(tmp_path: Path) -> None:
     project_root = tmp_path / "demo-project"
     project_root.mkdir()
