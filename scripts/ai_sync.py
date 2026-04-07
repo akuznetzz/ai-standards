@@ -3,7 +3,7 @@ from __future__ import annotations
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Annotated, cast
 
 import typer
 
@@ -49,13 +49,14 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def _load_toml(path: Path) -> dict[str, Any]:
+def _load_toml(path: Path) -> dict[str, object]:
     if not path.exists():
         raise SyncError(f"Required file does not exist: {path}")
     try:
-        return tomllib.loads(path.read_text(encoding="utf-8"))
+        loaded = cast(dict[str, object], tomllib.loads(path.read_text(encoding="utf-8")))
     except tomllib.TOMLDecodeError as error:
         raise SyncError(f"Invalid TOML in {path}: {error}") from error
+    return loaded
 
 
 def _load_registry(repo_root: Path) -> Registry:
@@ -67,14 +68,11 @@ def _load_registry(repo_root: Path) -> Registry:
 
 def _load_manifest(project_root: Path) -> Manifest:
     data = _load_toml(project_root / MANIFEST_FILE_NAME)
-    metadata_raw = data.get("metadata", {})
-    if not isinstance(metadata_raw, dict):
-        raise SyncError(f"'metadata' in {project_root / MANIFEST_FILE_NAME} must be a table")
-
+    metadata_raw = _expect_optional_table(data, "metadata", "manifest")
     metadata: dict[str, str] = {}
     for key, value in metadata_raw.items():
-        if not isinstance(key, str) or not isinstance(value, str):
-            raise SyncError("All metadata keys and values must be strings")
+        if not isinstance(value, str):
+            raise SyncError("All metadata values must be strings")
         metadata[key] = value
 
     return Manifest(
@@ -92,14 +90,14 @@ def _load_manifest(project_root: Path) -> Manifest:
     )
 
 
-def _expect_string(data: dict[str, Any], key: str, context: str) -> str:
+def _expect_string(data: dict[str, object], key: str, context: str) -> str:
     value = data.get(key)
     if not isinstance(value, str) or not value:
         raise SyncError(f"Expected non-empty string '{key}' in {context}")
     return value
 
 
-def _expect_string_list(data: dict[str, Any], key: str, context: str) -> list[str]:
+def _expect_string_list(data: dict[str, object], key: str, context: str) -> list[str]:
     value = data.get(key)
     if not isinstance(value, list) or not value:
         raise SyncError(f"Expected non-empty list '{key}' in {context}")
@@ -108,7 +106,7 @@ def _expect_string_list(data: dict[str, Any], key: str, context: str) -> list[st
     return list(value)
 
 
-def _expect_optional_string_list(data: dict[str, Any], key: str, context: str) -> list[str]:
+def _expect_optional_string_list(data: dict[str, object], key: str, context: str) -> list[str]:
     value = data.get(key, [])
     if not isinstance(value, list):
         raise SyncError(f"Expected list '{key}' in {context}")
@@ -117,19 +115,31 @@ def _expect_optional_string_list(data: dict[str, Any], key: str, context: str) -
     return list(value)
 
 
-def _expect_mapping_of_string_lists(
-    data: dict[str, Any],
+def _expect_optional_table(
+    data: dict[str, object],
     key: str,
     context: str,
-) -> dict[str, list[str]]:
-    value = data.get(key)
+) -> dict[str, object]:
+    value = data.get(key, {})
     if not isinstance(value, dict):
         raise SyncError(f"Expected table '{key}' in {context}")
 
-    result: dict[str, list[str]] = {}
+    result: dict[str, object] = {}
     for mapping_key, mapping_value in value.items():
         if not isinstance(mapping_key, str):
             raise SyncError(f"Expected string key inside '{key}' in {context}")
+        result[mapping_key] = mapping_value
+    return result
+
+
+def _expect_mapping_of_string_lists(
+    data: dict[str, object],
+    key: str,
+    context: str,
+) -> dict[str, list[str]]:
+    value = _expect_optional_table(data, key, context)
+    result: dict[str, list[str]] = {}
+    for mapping_key, mapping_value in value.items():
         if not isinstance(mapping_value, list) or not mapping_value:
             raise SyncError(
                 f"Expected non-empty list for '{mapping_key}' inside '{key}' in {context}"
@@ -257,8 +267,8 @@ def _copy_template_if_missing(source_path: Path, destination_path: Path) -> bool
 
 @app.command()
 def render(
-    project_root: Path = PROJECT_ROOT_OPTION,
-    output_name: str = OUTPUT_NAME_OPTION,
+    project_root: Annotated[Path, PROJECT_ROOT_OPTION],
+    output_name: Annotated[str, OUTPUT_NAME_OPTION],
 ) -> None:
     """Render AGENTS.md for a downstream project."""
 
@@ -269,8 +279,8 @@ def render(
 
 @app.command()
 def update(
-    project_root: Path = PROJECT_ROOT_OPTION,
-    output_name: str = OUTPUT_NAME_OPTION,
+    project_root: Annotated[Path, PROJECT_ROOT_OPTION],
+    output_name: Annotated[str, OUTPUT_NAME_OPTION],
 ) -> None:
     """Alias for render, intended for explicit standards updates."""
 
@@ -281,8 +291,8 @@ def update(
 
 @app.command()
 def check(
-    project_root: Path = PROJECT_ROOT_OPTION,
-    output_name: str = OUTPUT_NAME_OPTION,
+    project_root: Annotated[Path, PROJECT_ROOT_OPTION],
+    output_name: Annotated[str, OUTPUT_NAME_OPTION],
 ) -> None:
     """Check that the generated file matches the current manifest and standards."""
 
@@ -298,7 +308,7 @@ def check(
 
 @app.command("init-project")
 def init_project(
-    project_root: Path = PROJECT_ROOT_OPTION,
+    project_root: Annotated[Path, PROJECT_ROOT_OPTION],
 ) -> None:
     """Create starter manifest and project-local override templates."""
 

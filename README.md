@@ -25,7 +25,7 @@ Use three layers:
 
 - `fragments`: direct core rules that should always be rendered.
 - `features`: optional capabilities such as `conport`, `design-first-collaboration`, and `grace`.
-- `stacks`: technology-specific rules such as `python`, `fastapi`, `postgres`, `react`, or `vue`.
+- `stacks`: technology-specific rules such as `python`, `fastapi`, `postgres`, `react`, `vue`, or `java-spring`.
 
 Recommended starting point for a Python/FastAPI project with standard communication and architecture requirements:
 

@@ -17,10 +17,12 @@
 - Keep functions small and single-purpose.
 - Use meaningful names and avoid unclear abbreviations.
 - Replace magic values with named constants or configuration.
+- Keep file and module structure coherent and predictable.
+- Hide implementation details behind clear interfaces and module boundaries.
 - Use comments only to explain intent or non-obvious decisions.
 - Refactor early when debt becomes visible.
+- Add or update focused tests for bug fixes, edge cases, and error paths when the project has testing in place.
 
 ## DRY
 - Do not duplicate code.
 - If duplication is detected or strongly suspected, tell the user and propose a refactoring path.
-
