@@ -1,5 +1,19 @@
 # AI Standards
 
+## Оглавление
+
+- [Структура](#структура)
+- [Быстрый старт](#быстрый-старт)
+- [Конфигурация только через манифест](#конфигурация-только-через-манифест)
+- [Правила, специфичные для проекта](#правила-специфичные-для-проекта)
+- [Agent Adapters](#agent-adapters)
+- [Заимствование внешних правил](#заимствование-внешних-правил)
+- [Использование Review Lenses в проекте](#использование-review-lenses-в-проекте)
+- [Использование GRACE в проекте](#использование-grace-в-проекте)
+- [Порядок работы с проектом](#порядок-работы-с-проектом)
+- [Версионирование](#версионирование)
+- [Текущие фрагменты стеков](#текущие-фрагменты-стеков)
+
 Централизованная инфраструктура инструкций для ИИ-агентов, генерирующая проектные `AGENTS.md`.
 
 Англоязычный оригинал находится в [README.md](README.md). При изменениях в английской версии эту локализацию нужно обновлять в том же наборе изменений.
@@ -28,7 +42,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
 - `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `grace` и `review-lenses`.
-- `stacks`: правила, зависящие от технологии, например `python`, `fastapi`, `postgres`, `react`, `vue` или `java-spring`.
+- `stacks`: правила, зависящие от технологии, например `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue` или `java-spring`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
 Рекомендуемая стартовая точка для Python/FastAPI проекта со стандартными требованиями к коммуникации и архитектуре:
@@ -69,6 +83,47 @@ agents = ["codex", "cursor"]
 ```
 
 Выбирайте зависимости явно. Если правило нужно только одному проекту, держите его в локальном дополнении, а не превращайте в общий фрагмент.
+
+Примеры композиции стеков:
+
+```toml
+# FastAPI + SQLAlchemy + PostgreSQL
+stacks = [
+  "python",
+  "fastapi",
+  "sqlalchemy",
+  "postgres",
+]
+```
+
+```toml
+# Django API проект
+stacks = [
+  "python",
+  "django",
+  "django-service-layer",
+  "django-naming",
+  "django-drf",
+  "django-save-lifecycle",
+  "postgres",
+]
+```
+
+```toml
+# Django server-rendered проект
+stacks = [
+  "python",
+  "django",
+  "django-service-layer",
+  "django-save-lifecycle",
+  "postgres",
+]
+```
+
+Архитектурное примечание:
+
+- Используйте `sqlalchemy` вместе с сервисным слоем и repository-style доступом к данным. Это напрямую соответствует общим правилам `core/architecture` и является типовым выбором для FastAPI и похожих Python-сервисов.
+- Используйте `django`, когда проект следует идиомам Django и сам ORM выступает persistence abstraction. В этом стеке сервисы и selectors работают с моделями через Django ORM без отдельного repository-слоя.
 
 `tooling.agents` не меняет содержимое сгенерированного `AGENTS.md`. Этот раздел объявляет, какие tool-specific companion templates нужно держать синхронизированными внутри подключаемого проекта.
 
@@ -317,6 +372,12 @@ version = "2026.03"
 
 - `python`
 - `fastapi`
+- `sqlalchemy`
+- `django`
+- `django-service-layer`
+- `django-naming`
+- `django-drf`
+- `django-save-lifecycle`
 - `react`
 - `postgres`
 - `vue`

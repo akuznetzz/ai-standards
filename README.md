@@ -1,5 +1,19 @@
 # AI Standards
 
+## Contents
+
+- [Layout](#layout)
+- [Quick Start](#quick-start)
+- [Manifest-Only Configuration](#manifest-only-configuration)
+- [Project-Specific Rules](#project-specific-rules)
+- [Agent Adapters](#agent-adapters)
+- [Import External Rules](#import-external-rules)
+- [Using Review Lenses In a Project](#using-review-lenses-in-a-project)
+- [Using GRACE In a Project](#using-grace-in-a-project)
+- [Project Flow](#project-flow)
+- [Versioning](#versioning)
+- [Current Stack Fragments](#current-stack-fragments)
+
 Centralized AI instruction infrastructure for project-specific `AGENTS.md` generation.
 
 Russian localized version: [README.ru.md](README.ru.md)
@@ -28,7 +42,7 @@ Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
 - `features`: optional capabilities such as `conport`, `design-first-collaboration`, `grace`, and `review-lenses`.
-- `stacks`: technology-specific rules such as `python`, `fastapi`, `postgres`, `react`, `vue`, or `java-spring`.
+- `stacks`: technology-specific rules such as `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, or `java-spring`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
 Recommended starting point for a Python/FastAPI project with standard communication and architecture requirements:
@@ -69,6 +83,47 @@ agents = ["codex", "cursor"]
 ```
 
 Choose dependencies explicitly. If a rule belongs only to one project, keep it in a local override instead of turning it into a shared fragment.
+
+Stack composition examples:
+
+```toml
+# FastAPI + SQLAlchemy + PostgreSQL
+stacks = [
+  "python",
+  "fastapi",
+  "sqlalchemy",
+  "postgres",
+]
+```
+
+```toml
+# Django API project
+stacks = [
+  "python",
+  "django",
+  "django-service-layer",
+  "django-naming",
+  "django-drf",
+  "django-save-lifecycle",
+  "postgres",
+]
+```
+
+```toml
+# Django server-rendered project
+stacks = [
+  "python",
+  "django",
+  "django-service-layer",
+  "django-save-lifecycle",
+  "postgres",
+]
+```
+
+Architecture note:
+
+- Use `sqlalchemy` with service plus repository-style data access. This matches the shared `core/architecture` rules directly and is the default fit for FastAPI and similar Python services.
+- Use `django` when the project follows Django conventions and the ORM itself is the persistence abstraction. In that stack, services and selectors interact with models through the Django ORM instead of adding a separate repository layer.
 
 `tooling.agents` does not change the rendered `AGENTS.md`. It declares which agent-specific companion templates should be kept in sync inside the downstream project.
 
@@ -353,6 +408,13 @@ The renderer embeds the requested version and the source path into the generated
 
 - `python`
 - `fastapi`
+- `sqlalchemy`
+- `django`
+- `django-service-layer`
+- `django-naming`
+- `django-drf`
+- `django-save-lifecycle`
 - `react`
 - `postgres`
 - `vue`
+- `java-spring`
