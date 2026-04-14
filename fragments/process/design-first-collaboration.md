@@ -6,3 +6,7 @@
 - When ambiguity remains, capture the decision point and the tradeoff instead of silently guessing.
 - Keep architectural reasoning visible enough that another agent can continue the work safely.
 
+## Planning Discipline
+- Use an explicit plan when the task involves architecture decisions, multiple dependent steps, migration risk, or non-trivial verification.
+- If new constraints, contradictions, or failed verification invalidate the current approach, re-plan before continuing.
+- Keep the planning overhead proportional to the task; do not force heavy process onto small local changes.

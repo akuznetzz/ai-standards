@@ -8,6 +8,7 @@
 - [Правила, специфичные для проекта](#правила-специфичные-для-проекта)
 - [Agent Adapters](#agent-adapters)
 - [Заимствование внешних правил](#заимствование-внешних-правил)
+- [Использование Reasoning Hygiene в проекте](#использование-reasoning-hygiene-в-проекте)
 - [Использование Review Lenses в проекте](#использование-review-lenses-в-проекте)
 - [Использование GRACE в проекте](#использование-grace-в-проекте)
 - [Порядок работы с проектом](#порядок-работы-с-проектом)
@@ -41,7 +42,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 Используются четыре слоя:
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
-- `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `grace` и `review-lenses`.
+- `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `grace`, `reasoning-hygiene` и `review-lenses`.
 - `stacks`: правила, зависящие от технологии, например `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue` или `java-spring`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
@@ -62,6 +63,7 @@ features = [
   "conport",
   "design-first-collaboration",
   "grace",
+  "reasoning-hygiene",
 ]
 
 stacks = [
@@ -252,6 +254,30 @@ Constraints:
 - Preserve existing behavior unless the imported rules justify a clear improvement.
 - If a source rule conflicts with UMA2 architecture or error-handling rules, reject it unless explicitly approved.
 ```
+
+## Использование Reasoning Hygiene в проекте
+
+`reasoning-hygiene` — это опциональная возможность для повышения качества анализа на сложных или неоднозначных задачах без опоры на model-specific prompt tricks.
+
+Используйте `reasoning-hygiene`, когда проекту полезны переиспользуемые правила для:
+
+- явного пошагового разложения нетривиальных задач;
+- выведения наружу assumptions, edge cases и verification points;
+- self-review в виде пробелов, рисков и недостающих подтверждений;
+- task-specific ролей, которые добавляют реальные ограничения вместо generic persona fluff.
+
+`ai-standards` должен хранить устойчивую policy:
+
+- какие практики рассуждения вообще стоит стандартизировать;
+- какие prompt-паттерны слишком хрупкие или model-specific для нормализации;
+- как эта возможность дополняет `design-first-collaboration`, `conport` и `grace`.
+
+Подробная методика применения находится в:
+
+- английском руководстве: [docs/reasoning-hygiene-usage.md](docs/reasoning-hygiene-usage.md)
+- русском руководстве: [docs/reasoning-hygiene-usage.ru.md](docs/reasoning-hygiene-usage.ru.md)
+
+Эмоциональное давление, стимулы, challenge-prompts и прочий prompt-folklore не следует переносить в этот общий feature, если только он не станет устойчивой cross-model policy с ясной доказательной базой.
 
 ## Использование Review Lenses в проекте
 

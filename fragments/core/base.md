@@ -12,6 +12,11 @@
 - Do not invent changes beyond the user's request.
 - Prefer single coherent patches per file.
 
+## Completion Discipline
+- Do not mark work complete without verifying the result in a task-appropriate way.
+- If verification is partial or unavailable, state that explicitly and name the remaining risk.
+- For bug fixes, prefer confirming the root cause or the most likely failure path before closing the task.
+
 ## General Engineering Principles
 - Prefer small, coherent changes.
 - Keep functions small and single-purpose.

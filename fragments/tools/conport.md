@@ -5,3 +5,7 @@
 - Before logging substantial new knowledge, align with the user if the workspace follows a confirmation-based ConPort workflow.
 - After significant work, update ConPort with the result, rationale, and next steps when the user wants the memory synchronized.
 
+## Durable Lessons
+- After meaningful corrections or repeated mistakes, capture only durable lessons that can prevent the same class of error.
+- Record the pattern, the preventive rule, and the scope where it applies.
+- Do not create mechanical memory churn for one-off or low-signal corrections.

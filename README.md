@@ -8,6 +8,7 @@
 - [Project-Specific Rules](#project-specific-rules)
 - [Agent Adapters](#agent-adapters)
 - [Import External Rules](#import-external-rules)
+- [Using Reasoning Hygiene In a Project](#using-reasoning-hygiene-in-a-project)
 - [Using Review Lenses In a Project](#using-review-lenses-in-a-project)
 - [Using GRACE In a Project](#using-grace-in-a-project)
 - [Project Flow](#project-flow)
@@ -41,7 +42,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
-- `features`: optional capabilities such as `conport`, `design-first-collaboration`, `grace`, and `review-lenses`.
+- `features`: optional capabilities such as `conport`, `design-first-collaboration`, `grace`, `reasoning-hygiene`, and `review-lenses`.
 - `stacks`: technology-specific rules such as `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, or `java-spring`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
@@ -62,6 +63,7 @@ features = [
   "conport",
   "design-first-collaboration",
   "grace",
+  "reasoning-hygiene",
 ]
 
 stacks = [
@@ -252,6 +254,32 @@ Constraints:
 - Preserve existing behavior unless the imported rules justify a clear improvement.
 - If a source rule conflicts with UMA2 architecture or error-handling rules, reject it unless explicitly approved.
 ```
+
+## Using Review Lenses In a Project
+
+## Using Reasoning Hygiene In a Project
+
+`reasoning-hygiene` is an optional feature for improving analysis quality on complex or ambiguous tasks without relying on model-specific prompt tricks.
+
+Use `reasoning-hygiene` when a project benefits from reusable rules for:
+
+- explicit step-by-step breakdowns on non-trivial tasks
+- surfacing assumptions, edge cases, and verification points
+- self-review framed as gaps, risks, and missing evidence
+- task-specific roles that add real constraints instead of generic persona fluff
+
+`ai-standards` owns the durable policy:
+
+- which reasoning behaviors are worth standardizing
+- which prompt patterns are too brittle or model-specific to normalize
+- how this feature complements `design-first-collaboration`, `conport`, and `grace`
+
+Detailed operational guidance lives in:
+
+- English guide: [docs/reasoning-hygiene-usage.md](docs/reasoning-hygiene-usage.md)
+- Russian guide: [docs/reasoning-hygiene-usage.ru.md](docs/reasoning-hygiene-usage.ru.md)
+
+Keep emotional pressure, incentives, challenge prompts, and other prompt folklore out of this shared feature unless they become durable, cross-model policy with clear evidence.
 
 ## Using Review Lenses In a Project
 
