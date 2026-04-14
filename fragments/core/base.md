@@ -1,4 +1,4 @@
-# UMA2 — Core Rules
+# Core Rules
 
 ## Language & Communication
 - Chat with the user in Russian.
