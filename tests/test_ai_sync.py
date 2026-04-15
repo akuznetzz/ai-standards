@@ -212,6 +212,35 @@ def test_django_and_fastapi_stacks_render_updated_guidance(tmp_path: Path) -> No
     assert "Raise `HTTPException` at the HTTP boundary" in result.content
 
 
+def test_django_drf_stack_renders_softened_guidance(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK
+        + 'fragments = ["core/base", "core/error-handling"]\n'
+        + 'features = ["conport"]\n'
+        + 'stacks = ["django-drf"]\n'
+        + 'local_overrides = ["docs/ai/project-rules.md"]\n'
+        + "\n"
+        + "[metadata]\n"
+        + 'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## Django REST Framework" in result.content
+    assert "Choose `APIView`, generic views, or viewsets" in result.content
+    assert "Use `Serializer` or `ModelSerializer` deliberately" in result.content
+    assert "Validate incoming data at the API boundary" in result.content
+
+
 def test_review_lenses_feature_can_be_rendered(tmp_path: Path) -> None:
     project_root = tmp_path / "demo-project"
     project_root.mkdir()
