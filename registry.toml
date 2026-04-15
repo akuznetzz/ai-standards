@@ -6,6 +6,7 @@ review-lenses = ["process/review-lenses"]
 structured-artifacts = ["process/structured-artifacts"]
 
 [stacks]
+typescript = ["stacks/typescript"]
 python = ["stacks/python"]
 fastapi = ["stacks/fastapi"]
 react = ["stacks/react"]

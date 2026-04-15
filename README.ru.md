@@ -43,7 +43,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
 - `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses` и `structured-artifacts`.
-- `stacks`: правила, зависящие от технологии, например `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue` или `java-spring`.
+- `stacks`: правила, зависящие от технологии, например `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue` или `java-spring`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
 Рекомендуемая стартовая точка для Python/FastAPI проекта со стандартными требованиями к коммуникации, планированию и архитектуре:
@@ -87,6 +87,22 @@ agents = ["codex", "cursor"]
 Выбирайте зависимости явно. Если правило нужно только одному проекту, держите его в локальном дополнении, а не превращайте в общий фрагмент.
 
 Примеры композиции стеков:
+
+```toml
+# React + TypeScript frontend
+stacks = [
+  "typescript",
+  "react",
+]
+```
+
+```toml
+# Vue + TypeScript frontend
+stacks = [
+  "typescript",
+  "vue",
+]
+```
 
 ```toml
 # FastAPI + SQLAlchemy + PostgreSQL
@@ -350,6 +366,7 @@ version = "2026.03"
 
 ## Текущие фрагменты стеков
 
+- `typescript`
 - `python`
 - `fastapi`
 - `sqlalchemy`

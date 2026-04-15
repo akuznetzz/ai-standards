@@ -43,7 +43,7 @@ Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
 - `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses`, and `structured-artifacts`.
-- `stacks`: technology-specific rules such as `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, or `java-spring`.
+- `stacks`: technology-specific rules such as `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, or `java-spring`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
 Recommended starting point for a Python/FastAPI project with standard communication, planning, and architecture requirements:
@@ -87,6 +87,22 @@ agents = ["codex", "cursor"]
 Choose dependencies explicitly. If a rule belongs only to one project, keep it in a local override instead of turning it into a shared fragment.
 
 Stack composition examples:
+
+```toml
+# React + TypeScript frontend
+stacks = [
+  "typescript",
+  "react",
+]
+```
+
+```toml
+# Vue + TypeScript frontend
+stacks = [
+  "typescript",
+  "vue",
+]
+```
 
 ```toml
 # FastAPI + SQLAlchemy + PostgreSQL
@@ -354,6 +370,7 @@ The renderer embeds the requested version and the source path into the generated
 
 ## Current Stack Fragments
 
+- `typescript`
 - `python`
 - `fastapi`
 - `sqlalchemy`
