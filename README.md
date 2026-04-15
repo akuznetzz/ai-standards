@@ -49,7 +49,9 @@ Use four layers:
 Recommended starting point for a Python/FastAPI project with standard communication, planning, and architecture requirements:
 
 ```toml
-version = "2026.03"
+ai_standards_version = "0.1.0"
+project_version = "replace-me"
+project_release_date = "YYYY-MM-DD"
 
 fragments = [
   "core/base",
@@ -363,10 +365,20 @@ Ready-to-copy downstream templates:
 Pin the desired standards version in `ai.project.toml`:
 
 ```toml
-version = "2026.03"
+ai_standards_version = "0.1.0"
+project_version = "replace-me"
+project_release_date = "YYYY-MM-DD"
 ```
 
-The renderer embeds the requested version and the source path into the generated file header.
+The renderer embeds the current `ai-standards` release metadata from `pyproject.toml`
+and the project-local version metadata from `ai.project.toml` into the generated file
+header.
+
+For this repository's release workflow:
+
+- `rtk uv run python scripts/bump_version.py` previews the next release version and date.
+- `rtk uv run python scripts/bump_version.py save --part minor` updates release metadata on a clean worktree.
+- `rtk uv run python scripts/bump_version.py tag` creates an annotated tag from `main` on a clean worktree.
 
 ## Current Stack Fragments
 

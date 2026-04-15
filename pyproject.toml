@@ -26,3 +26,6 @@ python_version = "3.11"
 strict = true
 files = ["scripts", "tests"]
 mypy_path = "typings"
+
+[tool.ai-standards]
+release_date = "2026-04-15"

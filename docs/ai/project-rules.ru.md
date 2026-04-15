@@ -26,3 +26,12 @@
 - Перед изменением документации проверяйте, не требует ли обновления также связанная английская или русская версия.
 - При создании новой пары документов предпочитайте `name.md` для английской версии и `name.ru.md` для русской.
 - Не переписывайте, не переводите и не парьте chat export files, в чьих именах содержится `-log-`.
+
+## Release Workflow
+
+- Release metadata репозитория хранится в `pyproject.toml` в полях `project.version` и `tool.ai-standards.release_date`.
+- Метаданные self-hosted манифеста хранятся в `ai.project.toml` в полях `ai_standards_version`, `project_version` и `project_release_date`.
+- Для preview, save и tag операций над release version в этом репозитории используйте `scripts/bump_version.py`.
+- `scripts/bump_version.py save` разрешён только на чистом git worktree.
+- `scripts/bump_version.py tag` разрешён только на чистом git worktree и только из ветки `main`.
+- Создание релизного тега остаётся отдельным шагом по отношению к сохранению версии и git commit.

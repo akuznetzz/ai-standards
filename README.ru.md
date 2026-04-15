@@ -49,7 +49,9 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 Рекомендуемая стартовая точка для Python/FastAPI проекта со стандартными требованиями к коммуникации, планированию и архитектуре:
 
 ```toml
-version = "2026.03"
+ai_standards_version = "0.1.0"
+project_version = "replace-me"
+project_release_date = "YYYY-MM-DD"
 
 fragments = [
   "core/base",
@@ -359,10 +361,19 @@ Constraints:
 Фиксируйте нужную версию стандартов в `ai.project.toml`.
 
 ```toml
-version = "2026.03"
+ai_standards_version = "0.1.0"
+project_version = "replace-me"
+project_release_date = "YYYY-MM-DD"
 ```
 
-Сборщик встраивает запрошенную версию и путь к источнику в заголовок сгенерированного файла.
+Сборщик встраивает в заголовок сгенерированного файла текущие release metadata из
+`pyproject.toml` и project-local version metadata из `ai.project.toml`.
+
+Для release workflow самого этого репозитория:
+
+- `rtk uv run python scripts/bump_version.py` показывает предлагаемые версию и дату релиза.
+- `rtk uv run python scripts/bump_version.py save --part minor` обновляет release metadata только на чистом рабочем дереве.
+- `rtk uv run python scripts/bump_version.py tag` создаёт аннотированный тег только из `main` и только на чистом рабочем дереве.
 
 ## Текущие фрагменты стеков
 

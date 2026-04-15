@@ -26,3 +26,12 @@ Russian localized version: [project-rules.ru.md](project-rules.ru.md)
 - Before editing documentation, check whether the paired English or Russian file also requires an update.
 - When creating a new documentation pair, prefer `name.md` for English and `name.ru.md` for Russian.
 - Do not rewrite, translate, or pair chat export files whose names contain `-log-`.
+
+## Release Workflow
+
+- Repository release metadata lives in `pyproject.toml` under `project.version` and `tool.ai-standards.release_date`.
+- Self-hosted manifest metadata lives in `ai.project.toml` under `ai_standards_version`, `project_version`, and `project_release_date`.
+- Use `scripts/bump_version.py` for release-version preview, save, and tag operations in this repository.
+- `scripts/bump_version.py save` is allowed only on a clean git worktree.
+- `scripts/bump_version.py tag` is allowed only on a clean git worktree and only from the `main` branch.
+- Release tagging remains a separate step from version saving and from git commits.
