@@ -43,7 +43,7 @@ Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
 - `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses`, and `structured-artifacts`.
-- `stacks`: technology-specific rules such as `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring`, or `spring-data-jpa`.
+- `stacks`: technology-specific or architecture-specific rules such as `layered-architecture`, `backend-layered-architecture`, `frontend-layered-architecture`, `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring`, or `spring-data-jpa`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
 Recommended starting point for a Python/FastAPI project with standard communication, planning, and architecture requirements:
@@ -145,6 +145,7 @@ stacks = [
 stacks = [
   "typescript",
   "react",
+  "frontend-layered-architecture",
   "vite",
   "fsd",
 ]
@@ -153,6 +154,7 @@ stacks = [
 ```toml
 # FastAPI + SQLAlchemy + PostgreSQL
 stacks = [
+  "backend-layered-architecture",
   "python",
   "fastapi",
   "sqlalchemy",
@@ -165,9 +167,7 @@ stacks = [
 stacks = [
   "python",
   "django",
-  "django-hacksoft-style",
   "django-service-layer",
-  "django-naming",
   "django-drf",
   "django-save-orchestration",
   "postgres",
@@ -179,7 +179,6 @@ stacks = [
 stacks = [
   "python",
   "django",
-  "django-hacksoft-style",
   "django-service-layer",
   "django-save-orchestration",
   "postgres",
@@ -199,7 +198,11 @@ stacks = [
 Architecture note:
 
 - Use `sqlalchemy` with service plus repository-style data access. This matches the shared `core/architecture` rules directly and is the default fit for FastAPI and similar Python services.
+- Use `layered-architecture` when the project needs explicit cross-module dependency boundaries without tying the guidance to one language or framework.
+- Use `backend-layered-architecture` for backend services that want thin transport boundaries, explicit application orchestration, deliberate transaction boundaries, and adapter-style integration edges.
+- Use `frontend-layered-architecture` for frontends that need explicit UI, workflow, and infrastructure boundaries beyond ad hoc component-level structure.
 - Use `django` when the project follows Django conventions and the ORM itself is the persistence abstraction. In that stack, services and selectors interact with models through the Django ORM instead of adding a separate repository layer.
+- Use `django-service-layer` as the HackSoft-derived opt-in Django application style. It composes the shared layered-architecture fragments with Django-specific service, selector, and boundary conventions.
 - Use `nextjs` with `react` and usually `typescript` for App Router-based full-stack React applications.
 - Use `tanstack-query` with `react` or other supported UI stacks when the application needs an explicit server-state layer beyond ad hoc fetch-in-component patterns.
 - Use `nuxt` with `vue` and usually `typescript` for Nuxt-based full-stack Vue applications.
@@ -446,13 +449,14 @@ For this repository's release workflow:
 ## Current Stack Fragments
 
 - `typescript`
+- `layered-architecture`
+- `backend-layered-architecture`
+- `frontend-layered-architecture`
 - `python`
 - `fastapi`
 - `sqlalchemy`
 - `django`
-- `django-hacksoft-style`
 - `django-service-layer`
-- `django-naming`
 - `django-drf`
 - `django-save-orchestration`
 - `java`

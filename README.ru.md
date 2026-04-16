@@ -43,7 +43,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
 - `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses` и `structured-artifacts`.
-- `stacks`: правила, зависящие от технологии, например `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring` или `spring-data-jpa`.
+- `stacks`: правила, зависящие от технологии или архитектурного стиля, например `layered-architecture`, `backend-layered-architecture`, `frontend-layered-architecture`, `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring` или `spring-data-jpa`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
 Рекомендуемая стартовая точка для Python/FastAPI проекта со стандартными требованиями к коммуникации, планированию и архитектуре:
@@ -145,6 +145,7 @@ stacks = [
 stacks = [
   "typescript",
   "react",
+  "frontend-layered-architecture",
   "vite",
   "fsd",
 ]
@@ -153,6 +154,7 @@ stacks = [
 ```toml
 # FastAPI + SQLAlchemy + PostgreSQL
 stacks = [
+  "backend-layered-architecture",
   "python",
   "fastapi",
   "sqlalchemy",
@@ -165,9 +167,7 @@ stacks = [
 stacks = [
   "python",
   "django",
-  "django-hacksoft-style",
   "django-service-layer",
-  "django-naming",
   "django-drf",
   "django-save-orchestration",
   "postgres",
@@ -179,7 +179,6 @@ stacks = [
 stacks = [
   "python",
   "django",
-  "django-hacksoft-style",
   "django-service-layer",
   "django-save-orchestration",
   "postgres",
@@ -199,7 +198,11 @@ stacks = [
 Архитектурное примечание:
 
 - Используйте `sqlalchemy` вместе с сервисным слоем и repository-style доступом к данным. Это напрямую соответствует общим правилам `core/architecture` и является типовым выбором для FastAPI и похожих Python-сервисов.
+- Используйте `layered-architecture`, когда проекту нужны явные межмодульные dependency boundaries без привязки guidance к одному языку или фреймворку.
+- Используйте `backend-layered-architecture` для backend-сервисов, которым нужны thin transport boundaries, явная application orchestration, осознанные transaction boundaries и adapter-style integration edges.
+- Используйте `frontend-layered-architecture` для фронтендов, которым нужны явные границы между UI, workflow-логикой и infrastructure beyond ad hoc component-level structure.
 - Используйте `django`, когда проект следует идиомам Django и сам ORM выступает persistence abstraction. В этом стеке сервисы и selectors работают с моделями через Django ORM без отдельного repository-слоя.
+- Используйте `django-service-layer` как HackSoft-derived opt-in Django application style. Этот stack композирует общие layered-architecture fragments с Django-specific conventions для services, selectors и boundary placement.
 - Используйте `nextjs` вместе с `react` и обычно с `typescript` для full-stack React-приложений на базе App Router.
 - Используйте `tanstack-query` вместе с `react` или другими поддерживаемыми UI-стеками, когда приложению нужен явный server-state layer вместо ad hoc fetch-in-component patterns.
 - Используйте `nuxt` вместе с `vue` и обычно с `typescript` для full-stack Vue-приложений на базе Nuxt.
@@ -441,13 +444,14 @@ project_release_date = "YYYY-MM-DD"
 ## Текущие фрагменты стеков
 
 - `typescript`
+- `layered-architecture`
+- `backend-layered-architecture`
+- `frontend-layered-architecture`
 - `python`
 - `fastapi`
 - `sqlalchemy`
 - `django`
-- `django-hacksoft-style`
 - `django-service-layer`
-- `django-naming`
 - `django-drf`
 - `django-save-orchestration`
 - `java`
