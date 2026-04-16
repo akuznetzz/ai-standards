@@ -1,13 +1,13 @@
 from __future__ import annotations
 
+import os
+import shutil
 import subprocess
+import sys
 from pathlib import Path
-
-from typer.testing import CliRunner
 
 from scripts.bump_version import (
     VersioningError,
-    app,
     bump_version,
     create_tag,
     save_release,
@@ -24,14 +24,12 @@ def _run_git(repo_root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-runner = CliRunner()
-
-
 def _init_demo_repo(tmp_path: Path) -> Path:
     repo_root = tmp_path / "demo-repo"
     (repo_root / "docs" / "ai").mkdir(parents=True)
     (repo_root / "fragments" / "core").mkdir(parents=True)
     (repo_root / "templates").mkdir(parents=True)
+    (repo_root / "scripts").mkdir(parents=True)
 
     (repo_root / "pyproject.toml").write_text(
         (
@@ -94,6 +92,14 @@ def _init_demo_repo(tmp_path: Path) -> Path:
         ),
         encoding="utf-8",
     )
+    shutil.copyfile(
+        Path(__file__).resolve().parents[1] / "scripts" / "ai_sync.py",
+        repo_root / "scripts" / "ai_sync.py",
+    )
+    shutil.copyfile(
+        Path(__file__).resolve().parents[1] / "scripts" / "bump_version.py",
+        repo_root / "scripts" / "bump_version.py",
+    )
 
     assert _run_git(repo_root, "init", "-b", "main").returncode == 0
     assert _run_git(repo_root, "config", "user.name", "Codex Test").returncode == 0
@@ -149,16 +155,30 @@ def test_save_release_requires_clean_worktree(tmp_path: Path) -> None:
         raise AssertionError("Expected save_release to reject a dirty worktree")
 
 
-def test_save_command_runs_via_typer_cli(tmp_path: Path, monkeypatch) -> None:
+def test_save_command_runs_via_typer_cli(tmp_path: Path) -> None:
     repo_root = _init_demo_repo(tmp_path)
-    monkeypatch.setattr("scripts.bump_version._repo_root", lambda: repo_root)
+    env = dict(os.environ)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
 
-    result = runner.invoke(
-        app,
-        ["save", "--version", "1.1.0", "--release-date", "2026-04-16"],
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "scripts.bump_version",
+            "save",
+            "--version",
+            "1.1.0",
+            "--release-date",
+            "2026-04-16",
+        ],
+        cwd=repo_root,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
     )
 
-    assert result.exit_code == 0
+    assert result.returncode == 0
     assert "Saved version: 1.1.0" in result.stdout
     assert 'version = "1.1.0"' in (repo_root / "pyproject.toml").read_text(encoding="utf-8")
 

@@ -1,6 +1,6 @@
-ai_standards_version = "0.1.0"
-project_version = "0.1.0"
-project_release_date = "2026-04-15"
+ai_standards_version = "1.1.0"
+project_version = "1.1.0"
+project_release_date = "2026-04-16"
 
 fragments = [
   "core/base",

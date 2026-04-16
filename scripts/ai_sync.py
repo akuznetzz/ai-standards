@@ -332,8 +332,6 @@ def build_rendered_content(
             f"<!-- {GENERATED_MARKER} v{release_metadata.version} "
             f"release date: {release_metadata.release_date}. Do not edit manually. -->"
         ),
-        f"<!-- Source: {effective_repo_root} -->",
-        f"<!-- Project: {project_root} -->",
         f"<!-- Fragments: {', '.join(fragment_ids)} -->",
     ]
     if manifest.ai_standards_version != release_metadata.version:
