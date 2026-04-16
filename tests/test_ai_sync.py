@@ -62,7 +62,7 @@ def test_render_contains_expected_markers(tmp_path: Path) -> None:
     assert "Private local override." in result.content
 
 
-def test_java_spring_stack_can_be_rendered(tmp_path: Path) -> None:
+def test_java_spring_stack_alias_can_be_rendered(tmp_path: Path) -> None:
     project_root = tmp_path / "demo-project"
     project_root.mkdir()
     (project_root / "docs" / "ai").mkdir(parents=True)
@@ -85,8 +85,41 @@ def test_java_spring_stack_can_be_rendered(tmp_path: Path) -> None:
 
     result = build_rendered_content(project_root)
 
-    assert "## Java Spring Stack" in result.content
-    assert "Prefer constructor injection over field injection." in result.content
+    assert "## Java Stack" in result.content
+    assert "## Spring Stack" in result.content
+    assert "## Spring Data JPA Stack" in result.content
+    assert "Use constructor injection by default" in result.content
+
+
+def test_explicit_java_spring_stack_combination_can_be_rendered(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK +
+        'fragments = ["core/base", "core/architecture", "core/error-handling"]\n'
+        'features = ["conport"]\n'
+        'stacks = ["java", "spring", "spring-data-jpa"]\n'
+        'local_overrides = ["docs/ai/project-rules.md"]\n'
+        "\n"
+        "[metadata]\n"
+        'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "Use modern Java idioms supported by the repository baseline" in result.content
+    assert (
+        "Standardize REST error responses through centralized exception handling"
+        in result.content
+    )
+    assert "Treat fetch plans deliberately" in result.content
 
 
 def test_legacy_manifest_version_key_still_renders(tmp_path: Path) -> None:

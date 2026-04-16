@@ -43,7 +43,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
 - `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses` и `structured-artifacts`.
-- `stacks`: правила, зависящие от технологии, например `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue` или `java-spring`.
+- `stacks`: правила, зависящие от технологии, например `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, `java`, `spring` или `spring-data-jpa`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
 Рекомендуемая стартовая точка для Python/FastAPI проекта со стандартными требованиями к коммуникации, планированию и архитектуре:
@@ -141,10 +141,21 @@ stacks = [
 ]
 ```
 
+```toml
+# Spring Boot сервис с JPA
+stacks = [
+  "java",
+  "spring",
+  "spring-data-jpa",
+  "postgres",
+]
+```
+
 Архитектурное примечание:
 
 - Используйте `sqlalchemy` вместе с сервисным слоем и repository-style доступом к данным. Это напрямую соответствует общим правилам `core/architecture` и является типовым выбором для FastAPI и похожих Python-сервисов.
 - Используйте `django`, когда проект следует идиомам Django и сам ORM выступает persistence abstraction. В этом стеке сервисы и selectors работают с моделями через Django ORM без отдельного repository-слоя.
+- Используйте `java`, `spring` и `spring-data-jpa` вместе как современный baseline для Spring-сервиса. Старое имя стека `java-spring` сохраняется как compatibility alias для downstream manifests.
 
 `tooling.agents` не меняет содержимое сгенерированного `AGENTS.md`. Этот раздел объявляет, какие tool-specific companion templates нужно держать синхронизированными внутри подключаемого проекта.
 
@@ -388,7 +399,10 @@ project_release_date = "YYYY-MM-DD"
 - `django-naming`
 - `django-drf`
 - `django-save-orchestration`
+- `java`
+- `spring`
+- `spring-data-jpa`
 - `react`
 - `postgres`
 - `vue`
-- `java-spring`
+- `java-spring` (compatibility alias для `java` + `spring` + `spring-data-jpa`)

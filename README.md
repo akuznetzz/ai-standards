@@ -43,7 +43,7 @@ Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
 - `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses`, and `structured-artifacts`.
-- `stacks`: technology-specific rules such as `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, or `java-spring`.
+- `stacks`: technology-specific rules such as `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, `java`, `spring`, or `spring-data-jpa`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
 Recommended starting point for a Python/FastAPI project with standard communication, planning, and architecture requirements:
@@ -141,10 +141,21 @@ stacks = [
 ]
 ```
 
+```toml
+# Spring Boot service with JPA
+stacks = [
+  "java",
+  "spring",
+  "spring-data-jpa",
+  "postgres",
+]
+```
+
 Architecture note:
 
 - Use `sqlalchemy` with service plus repository-style data access. This matches the shared `core/architecture` rules directly and is the default fit for FastAPI and similar Python services.
 - Use `django` when the project follows Django conventions and the ORM itself is the persistence abstraction. In that stack, services and selectors interact with models through the Django ORM instead of adding a separate repository layer.
+- Use `java`, `spring`, and `spring-data-jpa` together for a modern Spring service baseline. The legacy `java-spring` stack name remains available as a compatibility alias for downstream manifests.
 
 `tooling.agents` does not change the rendered `AGENTS.md`. It declares which agent-specific companion templates should be kept in sync inside the downstream project.
 
@@ -393,7 +404,10 @@ For this repository's release workflow:
 - `django-naming`
 - `django-drf`
 - `django-save-orchestration`
+- `java`
+- `spring`
+- `spring-data-jpa`
 - `react`
 - `postgres`
 - `vue`
-- `java-spring`
+- `java-spring` (compatibility alias for `java` + `spring` + `spring-data-jpa`)
