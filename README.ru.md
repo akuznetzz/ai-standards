@@ -43,7 +43,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
 - `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses` и `structured-artifacts`.
-- `stacks`: правила, зависящие от технологии, например `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `vue`, `java`, `spring` или `spring-data-jpa`.
+- `stacks`: правила, зависящие от технологии, например `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring` или `spring-data-jpa`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
 Рекомендуемая стартовая точка для Python/FastAPI проекта со стандартными требованиями к коммуникации, планированию и архитектуре:
@@ -98,10 +98,55 @@ stacks = [
 ```
 
 ```toml
+# React + TanStack Query
+stacks = [
+  "typescript",
+  "react",
+  "tanstack-query",
+]
+```
+
+```toml
+# Next.js App Router frontend
+stacks = [
+  "typescript",
+  "react",
+  "nextjs",
+]
+```
+
+```toml
 # Vue + TypeScript frontend
 stacks = [
   "typescript",
   "vue",
+]
+```
+
+```toml
+# Vue + Vue Query
+stacks = [
+  "typescript",
+  "vue-query",
+]
+```
+
+```toml
+# Nuxt frontend
+stacks = [
+  "typescript",
+  "vue",
+  "nuxt",
+]
+```
+
+```toml
+# Vite + React + FSD frontend
+stacks = [
+  "typescript",
+  "react",
+  "vite",
+  "fsd",
 ]
 ```
 
@@ -155,6 +200,12 @@ stacks = [
 
 - Используйте `sqlalchemy` вместе с сервисным слоем и repository-style доступом к данным. Это напрямую соответствует общим правилам `core/architecture` и является типовым выбором для FastAPI и похожих Python-сервисов.
 - Используйте `django`, когда проект следует идиомам Django и сам ORM выступает persistence abstraction. В этом стеке сервисы и selectors работают с моделями через Django ORM без отдельного repository-слоя.
+- Используйте `nextjs` вместе с `react` и обычно с `typescript` для full-stack React-приложений на базе App Router.
+- Используйте `tanstack-query` вместе с `react` или другими поддерживаемыми UI-стеками, когда приложению нужен явный server-state layer вместо ad hoc fetch-in-component patterns.
+- Используйте `nuxt` вместе с `vue` и обычно с `typescript` для full-stack Vue-приложений на базе Nuxt.
+- Используйте `vue-query` как compatibility name для Vue-проектов, которым нужен общий TanStack Query guidance вместе с Vue baseline в одной записи стека.
+- Используйте `vite` только тогда, когда проект сам управляет конфигурацией сборки и dev-server через Vite, а не полностью наследует её от другого фреймворка.
+- Используйте `fsd` только тогда, когда фронтенд уже достаточно крупный, чтобы выигрывать от явных layer- и slice-границ; это opt-in архитектурный стек.
 - Используйте `java`, `spring` и `spring-data-jpa` вместе как современный baseline для Spring-сервиса. Старое имя стека `java-spring` сохраняется как compatibility alias для downstream manifests.
 
 `tooling.agents` не меняет содержимое сгенерированного `AGENTS.md`. Этот раздел объявляет, какие tool-specific companion templates нужно держать синхронизированными внутри подключаемого проекта.
@@ -403,6 +454,12 @@ project_release_date = "YYYY-MM-DD"
 - `spring`
 - `spring-data-jpa`
 - `react`
+- `nextjs`
+- `tanstack-query`
 - `postgres`
 - `vue`
+- `nuxt`
+- `vue-query` (compatibility alias для `tanstack-query` + `vue`)
+- `vite`
+- `fsd`
 - `java-spring` (compatibility alias для `java` + `spring` + `spring-data-jpa`)

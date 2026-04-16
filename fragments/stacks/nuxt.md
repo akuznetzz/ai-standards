@@ -1,0 +1,11 @@
+## Nuxt Stack
+- Prefer modern Nuxt conventions such as file-based routing, server routes, auto-imported composables, and framework-managed SSR boundaries over custom reimplementation.
+- Keep reusable application logic in composables, and keep composables explicit about inputs, returned refs, and side effects.
+- Prefer `useFetch` or `useAsyncData` for SSR-friendly page and layout data instead of ad hoc client-only fetching for initial render state.
+- Keep backend-for-frontend logic, privileged integrations, and secret-bearing code in `server/` or other Nitro server boundaries, not in browser code.
+- Use `useRuntimeConfig` deliberately, and treat private runtime config as server-only; pass the request event in server routes when runtime values matter there.
+- Configure rendering and caching behavior intentionally with route rules instead of letting pages drift between SSR, prerendering, SWR, ISR, and client-only rendering by accident.
+- Keep plugins focused on app-wide wiring, injections, or cross-cutting integration; do not hide ordinary feature logic in plugins.
+- Guard browser-only code with client-only boundaries such as `import.meta.client` or mount-time hooks so hydration stays predictable.
+- Keep route middleware and server handlers focused on flow control, authentication, and protocol boundaries; place business logic behind composables or service modules.
+- Use lazy loading and route-level splitting deliberately for large pages, heavy islands, and optional feature surfaces.

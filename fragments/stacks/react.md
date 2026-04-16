@@ -1,5 +1,12 @@
 ## React Stack
-- Prefer component APIs with clear ownership and stable props.
-- Keep domain logic out of presentational components.
+- Keep components and Hooks pure: rendering must not mutate external state or depend on render order.
+- Keep component APIs explicit, with clear ownership, stable props, and minimal state surface.
+- When something can be derived from props or state, calculate it during rendering instead of storing redundant state.
+- Treat Effects as an escape hatch for synchronizing with external systems; do not use them for pure derivations or ordinary event handling.
+- Prefer handling user-driven flows in event handlers; use Effects for subscriptions, timers, DOM integration, and other external synchronization.
+- Move reusable stateful UI logic into custom Hooks instead of duplicating it across components.
+- Keep domain and data-access logic out of presentational components; place orchestration behind hooks, services, or framework boundaries.
+- Do not add `memo`, `useMemo`, or `useCallback` by default; use manual memoization only for measured performance issues or identity-sensitive integration points.
+- When reading mutable state from outside React, prefer official subscription boundaries such as `useSyncExternalStore` or framework adapters over ad hoc Effect wiring.
+- Use transitions and deferred rendering deliberately for non-urgent updates when they materially improve responsiveness.
 - Preserve the existing design system and interaction patterns unless the user requests a redesign.
-

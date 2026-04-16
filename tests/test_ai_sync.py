@@ -177,6 +177,169 @@ def test_typescript_stack_can_be_rendered(tmp_path: Path) -> None:
     assert "## TypeScript Stack" in result.content
     assert "Use `satisfies` when you need to verify object shape" in result.content
     assert "## React Stack" in result.content
+    assert (
+        "Treat Effects as an escape hatch for synchronizing with external systems"
+        in result.content
+    )
+    assert "When reading mutable state from outside React" in result.content
+
+
+def test_vue_stack_renders_modern_guidance(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK
+        + 'fragments = ["core/base", "core/error-handling"]\n'
+        + 'features = ["conport"]\n'
+        + 'stacks = ["typescript", "vue"]\n'
+        + 'local_overrides = ["docs/ai/project-rules.md"]\n'
+        + "\n"
+        + "[metadata]\n"
+        + 'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## Vue Stack" in result.content
+    assert "prefer `<script setup>` as the default authoring style" in result.content
+    assert "Prefer `computed` for derived state" in result.content
+    assert "return a plain object of refs by default" in result.content
+
+
+def test_nextjs_stack_renders_framework_guidance(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK
+        + 'fragments = ["core/base", "core/error-handling"]\n'
+        + 'features = ["conport"]\n'
+        + 'stacks = ["typescript", "react", "nextjs"]\n'
+        + 'local_overrides = ["docs/ai/project-rules.md"]\n'
+        + "\n"
+        + "[metadata]\n"
+        + 'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## Next.js Stack" in result.content
+    assert "Treat Server Components as the default rendering boundary" in result.content
+    assert "Use Server Actions for form-style mutations" in result.content
+    assert "Provide route-level `loading`, `error`, and `not-found` boundaries" in result.content
+
+
+def test_tanstack_query_stack_can_be_rendered_with_react(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK
+        + 'fragments = ["core/base", "core/error-handling"]\n'
+        + 'features = ["conport"]\n'
+        + 'stacks = ["typescript", "react", "tanstack-query"]\n'
+        + 'local_overrides = ["docs/ai/project-rules.md"]\n'
+        + "\n"
+        + "[metadata]\n"
+        + 'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## TanStack Query Stack" in result.content
+    assert "Use TanStack Query for server-state synchronization" in result.content
+    assert "Keep query keys stable, structured, and domain-meaningful" in result.content
+    assert "After mutations, revalidate affected server state deliberately" in result.content
+
+
+def test_nuxt_vite_and_fsd_stacks_can_be_rendered_together(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK
+        + 'fragments = ["core/base", "core/error-handling"]\n'
+        + 'features = ["conport"]\n'
+        + 'stacks = ["typescript", "vue", "nuxt", "vite", "fsd"]\n'
+        + 'local_overrides = ["docs/ai/project-rules.md"]\n'
+        + "\n"
+        + "[metadata]\n"
+        + 'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## Nuxt Stack" in result.content
+    assert (
+        "Prefer `useFetch` or `useAsyncData` for SSR-friendly page and layout data"
+        in result.content
+    )
+    assert (
+        "Configure rendering and caching behavior intentionally with route rules"
+        in result.content
+    )
+    assert "## Vite Stack" in result.content
+    assert (
+        "Access browser-exposed environment variables through `import.meta.env`"
+        in result.content
+    )
+    assert "Prefer dynamic imports, route-level splitting" in result.content
+    assert "## Feature-Sliced Design Stack" in result.content
+    assert "Expose a deliberate public API for each slice or shared segment" in result.content
+
+
+def test_vue_query_alias_can_be_rendered(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+    (project_root / "docs" / "ai").mkdir(parents=True)
+
+    manifest = (
+        MANIFEST_RELEASE_BLOCK
+        + 'fragments = ["core/base", "core/error-handling"]\n'
+        + 'features = ["conport"]\n'
+        + 'stacks = ["typescript", "vue-query"]\n'
+        + 'local_overrides = ["docs/ai/project-rules.md"]\n'
+        + "\n"
+        + "[metadata]\n"
+        + 'project_name = "demo-project"\n'
+    )
+    (project_root / "ai.project.toml").write_text(manifest, encoding="utf-8")
+    (project_root / "docs" / "ai" / "project-rules.md").write_text(
+        "# Project-Specific AI Rules\n\n- Demo override.\n",
+        encoding="utf-8",
+    )
+
+    result = build_rendered_content(project_root)
+
+    assert "## Vue Stack" in result.content
+    assert "## TanStack Query Stack" in result.content
+    assert "Move reusable stateful logic into composables" in result.content
+    assert "Keep query keys stable, structured, and domain-meaningful" in result.content
 
 
 def test_python_stack_renders_unified_guidance(tmp_path: Path) -> None:
