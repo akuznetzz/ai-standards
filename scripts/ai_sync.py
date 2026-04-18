@@ -109,11 +109,14 @@ def _load_registry(repo_root: Path) -> Registry:
 
 def _load_release_metadata(repo_root: Path) -> ReleaseMetadata:
     data = _load_toml(repo_root / "pyproject.toml")
-    project = _expect_optional_table(data, "project", "pyproject")
     tool = _expect_optional_table(data, "tool", "pyproject")
     ai_standards_tool = _expect_optional_table(tool, "ai-standards", "pyproject.tool")
     return ReleaseMetadata(
-        version=_expect_string(project, "version", "pyproject.project"),
+        version=_expect_string(
+            ai_standards_tool,
+            "version",
+            "pyproject.tool.ai-standards",
+        ),
         release_date=_expect_string(
             ai_standards_tool,
             "release_date",
@@ -385,6 +388,18 @@ def _copy_template_if_missing(source_path: Path, destination_path: Path) -> bool
     return True
 
 
+def _seed_manifest_release_version(project_root: Path) -> None:
+    release_metadata = _load_release_metadata(_repo_root())
+    manifest_path = project_root / MANIFEST_FILE_NAME
+    content = manifest_path.read_text(encoding="utf-8")
+    content = content.replace(
+        'ai_standards_version = "replace-me"',
+        f'ai_standards_version = "{release_metadata.version}"',
+        1,
+    )
+    manifest_path.write_text(content, encoding="utf-8")
+
+
 def _build_managed_template_content(source_relative_path: str, raw_content: str) -> str:
     marker_block = (
         f"<!-- {MANAGED_TEMPLATE_MARKER_PREFIX} {source_relative_path} -->\n"
@@ -498,6 +513,7 @@ def init_project(
         project_root / MANIFEST_FILE_NAME,
     )
     if manifest_created:
+        _seed_manifest_release_version(project_root)
         created_paths.append(project_root / MANIFEST_FILE_NAME)
 
     project_rules_created = _copy_template_if_missing(

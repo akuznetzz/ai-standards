@@ -29,7 +29,9 @@ Russian localized version: [project-rules.ru.md](project-rules.ru.md)
 
 ## Release Workflow
 
-- Repository release metadata lives in `pyproject.toml` under `project.version` and `tool.ai-standards.release_date`.
+- Repository release metadata lives in `pyproject.toml` under `tool.ai-standards.version` and `tool.ai-standards.release_date`.
+- `project.version` in `pyproject.toml` describes the Python support tooling package, not the canonical release version of the `ai-standards` repository.
+- Change `project.version` only when the Python support package itself changes in a way that warrants a package-version bump, such as script or dependency changes.
 - Self-hosted manifest metadata lives in `ai.project.toml` under `ai_standards_version`, `project_version`, and `project_release_date`.
 - Use `scripts/bump_version.py` for release-version preview, save, and tag operations in this repository.
 - `scripts/bump_version.py save` is allowed only on a clean git worktree.

@@ -462,13 +462,14 @@ project_release_date = "YYYY-MM-DD"
 ```
 
 The renderer embeds the current `ai-standards` release metadata from `pyproject.toml`
+`tool.ai-standards`
 and the project-local version metadata from `ai.project.toml` into the generated file
 header.
 
 For this repository's release workflow:
 
 - `rtk uv run python scripts/bump_version.py` previews the next release version and date.
-- `rtk uv run python scripts/bump_version.py save --part minor` updates release metadata on a clean worktree.
+- `rtk uv run python scripts/bump_version.py save --part minor` updates repository release metadata on a clean worktree without changing the Python support package version.
 - `rtk uv run python scripts/bump_version.py tag` creates an annotated tag from `main` on a clean worktree.
 
 ## Current Stack Fragments

@@ -7,13 +7,14 @@ from pathlib import Path
 from scripts.ai_sync import (
     SyncError,
     build_rendered_content,
+    init_project,
     sync_project_templates,
     write_rendered_content,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CURRENT_AI_STANDARDS_VERSION = "1.2.0"
-CURRENT_RELEASE_DATE = "2026-04-16"
+CURRENT_AI_STANDARDS_VERSION = "1.3.1"
+CURRENT_RELEASE_DATE = "2026-04-18"
 MANIFEST_RELEASE_BLOCK = (
     f'ai_standards_version = "{CURRENT_AI_STANDARDS_VERSION}"\n'
     f'project_version = "{CURRENT_AI_STANDARDS_VERSION}"\n'
@@ -683,6 +684,18 @@ def test_render_cli_accepts_default_output_name_with_typer_024_plus(tmp_path: Pa
 
     assert result.returncode == 0, result.stderr
     assert (project_root / "AGENTS.md").exists()
+
+
+def test_init_project_seeds_current_ai_standards_version(tmp_path: Path) -> None:
+    project_root = tmp_path / "demo-project"
+    project_root.mkdir()
+
+    init_project(project_root)
+
+    manifest = (project_root / "ai.project.toml").read_text(encoding="utf-8")
+
+    assert f'ai_standards_version = "{CURRENT_AI_STANDARDS_VERSION}"' in manifest
+    assert 'project_version = "replace-me"' in manifest
 
 
 def test_missing_optional_override_does_not_fail(tmp_path: Path) -> None:

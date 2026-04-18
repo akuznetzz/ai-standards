@@ -29,7 +29,9 @@
 
 ## Release Workflow
 
-- Release metadata репозитория хранится в `pyproject.toml` в полях `project.version` и `tool.ai-standards.release_date`.
+- Release metadata репозитория хранится в `pyproject.toml` в полях `tool.ai-standards.version` и `tool.ai-standards.release_date`.
+- `project.version` в `pyproject.toml` описывает Python support tooling package, а не canonical release version репозитория `ai-standards`.
+- Меняйте `project.version` только тогда, когда сам Python support package действительно требует package-version bump, например из-за изменений скриптов или зависимостей.
 - Метаданные self-hosted манифеста хранятся в `ai.project.toml` в полях `ai_standards_version`, `project_version` и `project_release_date`.
 - Для preview, save и tag операций над release version в этом репозитории используйте `scripts/bump_version.py`.
 - `scripts/bump_version.py save` разрешён только на чистом git worktree.

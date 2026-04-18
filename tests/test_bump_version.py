@@ -38,6 +38,7 @@ def _init_demo_repo(tmp_path: Path) -> Path:
             'version = "0.1.0"\n'
             "\n"
             "[tool.ai-standards]\n"
+            'version = "0.1.0"\n'
             'release_date = "2026-04-15"\n'
         ),
         encoding="utf-8",
@@ -132,7 +133,8 @@ def test_save_release_updates_repo_metadata_and_agents(tmp_path: Path) -> None:
     )
     agents = (repo_root / "AGENTS.md").read_text(encoding="utf-8")
 
-    assert 'version = "0.2.0"' in pyproject
+    assert '[project]\nname = "demo-repo"\nversion = "0.1.0"' in pyproject
+    assert '[tool.ai-standards]\nversion = "0.2.0"' in pyproject
     assert 'release_date = "2026-04-20"' in pyproject
     assert 'ai_standards_version = "0.2.0"' in manifest
     assert 'project_version = "0.2.0"' in manifest
@@ -180,7 +182,9 @@ def test_save_command_runs_via_typer_cli(tmp_path: Path) -> None:
 
     assert result.returncode == 0
     assert "Saved version: 1.1.0" in result.stdout
-    assert 'version = "1.1.0"' in (repo_root / "pyproject.toml").read_text(encoding="utf-8")
+    pyproject = (repo_root / "pyproject.toml").read_text(encoding="utf-8")
+    assert '[project]\nname = "demo-repo"\nversion = "0.1.0"' in pyproject
+    assert '[tool.ai-standards]\nversion = "1.1.0"' in pyproject
 
 
 def test_create_tag_requires_main_branch(tmp_path: Path) -> None:

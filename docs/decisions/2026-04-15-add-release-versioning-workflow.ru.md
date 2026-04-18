@@ -6,6 +6,8 @@
 
 Accepted
 
+Частично superseded 2026-04-18 документом [2026-04-18-separate-release-version-from-python-package-version.ru.md](2026-04-18-separate-release-version-from-python-package-version.ru.md) в части расположения canonical repository release version.
+
 ## Дата
 
 2026-04-15

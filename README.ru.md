@@ -458,12 +458,13 @@ project_release_date = "YYYY-MM-DD"
 ```
 
 Сборщик встраивает в заголовок сгенерированного файла текущие release metadata из
-`pyproject.toml` и project-local version metadata из `ai.project.toml`.
+`pyproject.toml` `tool.ai-standards` и project-local version metadata из
+`ai.project.toml`.
 
 Для release workflow самого этого репозитория:
 
 - `rtk uv run python scripts/bump_version.py` показывает предлагаемые версию и дату релиза.
-- `rtk uv run python scripts/bump_version.py save --part minor` обновляет release metadata только на чистом рабочем дереве.
+- `rtk uv run python scripts/bump_version.py save --part minor` обновляет metadata релиза репозитория только на чистом рабочем дереве и не меняет версию Python support package.
 - `rtk uv run python scripts/bump_version.py tag` создаёт аннотированный тег только из `main` и только на чистом рабочем дереве.
 
 ## Текущие фрагменты стеков

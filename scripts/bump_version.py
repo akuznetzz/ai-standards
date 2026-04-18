@@ -14,6 +14,7 @@ import typer
 from scripts.ai_sync import build_rendered_content, write_rendered_content
 
 VERSION_PATTERN = re.compile(r"^(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)$")
+AI_STANDARDS_TABLE_HEADER = "[tool.ai-standards]"
 PART_VALUES: tuple[str, ...] = ("major", "minor", "patch")
 app = typer.Typer(add_completion=False, no_args_is_help=False)
 
@@ -61,18 +62,20 @@ def _expect_string(data: dict[str, object], key: str, context: str) -> str:
 
 def _load_release_state(repo_root: Path) -> ReleaseState:
     data = _load_toml(repo_root / "pyproject.toml")
-    project = _expect_table(data, "project", "pyproject")
     tool = _expect_table(data, "tool", "pyproject")
     ai_standards = _expect_table(tool, "ai-standards", "pyproject.tool")
     return ReleaseState(
-        version=_expect_string(project, "version", "pyproject.project"),
+        version=_expect_string(
+            ai_standards,
+            "version",
+            "pyproject.tool.ai-standards",
+        ),
         release_date=_expect_string(
             ai_standards,
             "release_date",
             "pyproject.tool.ai-standards",
         ),
     )
-
 
 def _parse_version(version: str) -> tuple[int, int, int]:
     match = VERSION_PATTERN.fullmatch(version)
@@ -186,27 +189,37 @@ def _replace_single_match(
     return updated
 
 
+def _upsert_tool_ai_standards_field(content: str, key: str, value: str) -> str:
+    if AI_STANDARDS_TABLE_HEADER in content:
+        if re.search(rf"(?ms)^\[tool\.ai-standards\]\n.*?^{re.escape(key)} = ", content):
+            return _replace_single_match(
+                rf'(?ms)(^\[tool\.ai-standards\]\n.*?^{re.escape(key)} = )"[^"]+"',
+                rf'\1"{value}"',
+                content,
+                f"pyproject tool.ai-standards.{key}",
+            )
+        return _replace_single_match(
+            r'(?ms)(^\[tool\.ai-standards\]\n)',
+            rf'\1{key} = "{value}"\n',
+            content,
+            f"pyproject tool.ai-standards.{key}",
+        )
+    return (
+        content.rstrip()
+        + (
+            f"\n\n{AI_STANDARDS_TABLE_HEADER}\n"
+            f'{key} = "{value}"\n'
+        )
+    )
+
+
 def _update_pyproject(repo_root: Path, version: str, release_date: str) -> None:
     path = repo_root / "pyproject.toml"
     content = path.read_text(encoding="utf-8")
-    content = _replace_single_match(
-        r'(?ms)(^\[project\]\n.*?^version = )"[^"]+"',
-        rf'\1"{version}"',
-        content,
-        "pyproject project.version",
-    )
-    if "[tool.ai-standards]" in content:
-        content = _replace_single_match(
-            r'(?ms)(^\[tool\.ai-standards\]\n.*?^release_date = )"[^"]+"',
-            rf'\1"{release_date}"',
-            content,
-            "pyproject tool.ai-standards.release_date",
-        )
-    else:
-        content = (
-            content.rstrip()
-            + f'\n\n[tool.ai-standards]\nrelease_date = "{release_date}"\n'
-        )
+    content = _upsert_tool_ai_standards_field(content, "version", version)
+    content = _upsert_tool_ai_standards_field(content, "release_date", release_date)
+    if not content.endswith("\n"):
+        content += "\n"
     path.write_text(content, encoding="utf-8")
 
 

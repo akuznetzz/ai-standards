@@ -6,6 +6,8 @@ Russian localized version: [2026-04-15-add-release-versioning-workflow.ru.md](20
 
 Accepted
 
+Superseded in part on 2026-04-18 by [2026-04-18-separate-release-version-from-python-package-version.md](2026-04-18-separate-release-version-from-python-package-version.md) for the location of the canonical repository release version.
+
 ## Date
 
 2026-04-15
