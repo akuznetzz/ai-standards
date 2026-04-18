@@ -2,6 +2,7 @@
 conport = ["tools/conport"]
 design-first-collaboration = ["process/design-first-collaboration"]
 reasoning-hygiene = ["process/reasoning-hygiene"]
+autonomy-boundaries = ["process/autonomy-boundaries"]
 review-lenses = ["process/review-lenses"]
 structured-artifacts = ["process/structured-artifacts"]
 

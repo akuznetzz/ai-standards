@@ -9,6 +9,7 @@
 - [Agent Adapters](#agent-adapters)
 - [Import External Rules](#import-external-rules)
 - [Using Reasoning Hygiene In a Project](#using-reasoning-hygiene-in-a-project)
+- [Using Autonomy Boundaries In a Project](#using-autonomy-boundaries-in-a-project)
 - [Using Review Lenses In a Project](#using-review-lenses-in-a-project)
 - [Using Structured Artifacts In a Project](#using-structured-artifacts-in-a-project)
 - [Project Flow](#project-flow)
@@ -42,7 +43,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
-- `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses`, and `structured-artifacts`.
+- `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `autonomy-boundaries`, `review-lenses`, and `structured-artifacts`.
 - `stacks`: technology-specific or architecture-specific rules such as `layered-architecture`, `backend-layered-architecture`, `frontend-layered-architecture`, `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring`, or `spring-data-jpa`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
@@ -64,6 +65,7 @@ features = [
   "conport",
   "design-first-collaboration",
   "reasoning-hygiene",
+  "autonomy-boundaries",
   "structured-artifacts",
 ]
 
@@ -362,6 +364,29 @@ Detailed operational guidance lives in:
 - Russian guide: [docs/reasoning-hygiene-usage.ru.md](docs/reasoning-hygiene-usage.ru.md)
 
 Keep emotional pressure, incentives, challenge prompts, and other prompt folklore out of this shared feature unless they become durable, cross-model policy with clear evidence.
+
+## Using Autonomy Boundaries In a Project
+
+`autonomy-boundaries` is an optional feature for deciding when an agent may continue autonomously and when it must stop and request human verification.
+
+Use `autonomy-boundaries` when a project benefits from reusable rules for:
+
+- long autonomous runs that still need explicit design and scope guardrails
+- mandatory stop conditions around design ambiguity, architecture drift, and widening blast radius
+- separating direction checkpoints from architecture-delta checkpoints
+- keeping long execution anchored to written artifacts and compact review outputs
+
+`ai-standards` owns the reusable policy:
+
+- long autonomous execution is an exception, not the default workflow
+- the agent may execute an agreed design but may not silently choose a new one
+- stop conditions matter as much as completion criteria
+- shared defaults should avoid brittle numeric thresholds and leave stricter limits to project-local rules
+
+Detailed operational guidance lives in:
+
+- English guide: [docs/autonomy-boundaries-usage.md](docs/autonomy-boundaries-usage.md)
+- Russian guide: [docs/autonomy-boundaries-usage.ru.md](docs/autonomy-boundaries-usage.ru.md)
 
 ## Using Review Lenses In a Project
 

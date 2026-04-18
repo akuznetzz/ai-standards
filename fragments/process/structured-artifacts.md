@@ -7,6 +7,7 @@
 ## Change Plans
 - Create a change plan when the task involves architecture decisions, multiple dependent steps, migration risk, behavior changes across layers, or non-trivial verification.
 - Keep the plan focused on goal, scope, touched modules, intended structure, risks, invariants, and verification.
+- For long autonomous execution, add a short session envelope covering non-goals, architectural constraints, stop conditions, and expected review artifacts.
 - Update the outcome section after implementation only when the original plan meaningfully guided the work.
 
 ## Module Contracts

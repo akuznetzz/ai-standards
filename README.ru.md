@@ -9,6 +9,7 @@
 - [Agent Adapters](#agent-adapters)
 - [Заимствование внешних правил](#заимствование-внешних-правил)
 - [Использование Reasoning Hygiene в проекте](#использование-reasoning-hygiene-в-проекте)
+- [Использование Autonomy Boundaries в проекте](#использование-autonomy-boundaries-в-проекте)
 - [Использование Review Lenses в проекте](#использование-review-lenses-в-проекте)
 - [Использование Structured Artifacts в проекте](#использование-structured-artifacts-в-проекте)
 - [Порядок работы с проектом](#порядок-работы-с-проектом)
@@ -42,7 +43,7 @@ uv run python scripts/ai_sync.py sync-templates --project-root /path/to/project
 Используются четыре слоя:
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
-- `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `review-lenses` и `structured-artifacts`.
+- `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `autonomy-boundaries`, `review-lenses` и `structured-artifacts`.
 - `stacks`: правила, зависящие от технологии или архитектурного стиля, например `layered-architecture`, `backend-layered-architecture`, `frontend-layered-architecture`, `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring` или `spring-data-jpa`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
@@ -64,6 +65,7 @@ features = [
   "conport",
   "design-first-collaboration",
   "reasoning-hygiene",
+  "autonomy-boundaries",
   "structured-artifacts",
 ]
 
@@ -362,6 +364,29 @@ Constraints:
 - русском руководстве: [docs/reasoning-hygiene-usage.ru.md](docs/reasoning-hygiene-usage.ru.md)
 
 Эмоциональное давление, стимулы, challenge-prompts и прочий prompt-folklore не следует переносить в этот общий feature, если только он не станет устойчивой cross-model policy с ясной доказательной базой.
+
+## Использование Autonomy Boundaries в проекте
+
+`autonomy-boundaries` — это опциональная возможность, которая определяет, когда агент может продолжать автономно, а когда обязан остановиться и запросить верификацию человеком.
+
+Используйте `autonomy-boundaries`, когда проекту полезны переиспользуемые правила для:
+
+- длинных автономных прогонов, которым всё равно нужны явные design- и scope-guardrails
+- обязательных stop conditions вокруг design ambiguity, architecture drift и роста blast radius
+- явного различения direction checkpoints и architecture-delta checkpoints
+- привязки длинного execution к письменным артефактам и компактным review outputs
+
+`ai-standards` должен хранить переиспользуемую policy:
+
+- длинная автономная работа — это исключение, а не default workflow
+- агент может исполнять согласованный design, но не должен тихо выбирать новый
+- stop conditions так же важны, как и completion criteria
+- shared defaults не должны продвигать хрупкие числовые пороги, оставляя более строгие лимиты project-local rules
+
+Подробная методика применения находится в:
+
+- английском руководстве: [docs/autonomy-boundaries-usage.md](docs/autonomy-boundaries-usage.md)
+- русском руководстве: [docs/autonomy-boundaries-usage.ru.md](docs/autonomy-boundaries-usage.ru.md)
 
 ## Использование Review Lenses в проекте
 

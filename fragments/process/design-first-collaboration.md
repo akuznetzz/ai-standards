@@ -4,6 +4,7 @@
 - Prefer stable contracts and composition over ad hoc coupling.
 - Separate discovery, decision, and implementation concerns.
 - When ambiguity remains, capture the decision point and the tradeoff instead of silently guessing.
+- Stop and request review when continued execution would require choosing a new design direction or materially widening the agreed scope.
 - Keep architectural reasoning visible enough that another agent can continue the work safely.
 
 ## Planning Discipline
