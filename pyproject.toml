@@ -1,6 +1,6 @@
 [project]
 name = "ai-standards"
-version = "1.2.0"
+version = "1.3.0"
 description = "Centralized AGENTS.md generator for project AI standards."
 requires-python = ">=3.11"
 dependencies = [
@@ -28,4 +28,4 @@ files = ["scripts", "tests"]
 mypy_path = "typings"
 
 [tool.ai-standards]
-release_date = "2026-04-16"
+release_date = "2026-04-18"
