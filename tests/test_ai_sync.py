@@ -13,8 +13,8 @@ from scripts.ai_sync import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CURRENT_AI_STANDARDS_VERSION = "1.3.1"
-CURRENT_RELEASE_DATE = "2026-04-18"
+CURRENT_AI_STANDARDS_VERSION = "1.4.0"
+CURRENT_RELEASE_DATE = "2026-04-20"
 MANIFEST_RELEASE_BLOCK = (
     f'ai_standards_version = "{CURRENT_AI_STANDARDS_VERSION}"\n'
     f'project_version = "{CURRENT_AI_STANDARDS_VERSION}"\n'

@@ -3,8 +3,10 @@
 - Favor explicit domain models and typed interfaces.
 - Keep application wiring separate from business logic.
 - Use type hints for public and shared module boundaries; add local annotations when they improve clarity or checker feedback.
-- Prefer dataclasses or typed models over loose dictionaries for structured data.
+- Use assignment expressions (`:=`) when they remove repetition or make control flow clearer; avoid them when they obscure the code.
 - Use `match` for closed variants, tagged states, and structural patterns when it makes the decision logic clearer.
+- Prefer `@dataclass` or a typed model for structured return values when a function would otherwise return an opaque tuple or dictionary.
+- Prefer module-level constants for repeated thresholds, timeouts, state codes, and other stable literals; keep one-off literals inline when they are local and obvious.
 - Add explicit types at public module boundaries such as exported functions, service interfaces, repositories, adapters, and shared utilities.
 - For function parameters, prefer the widest interface the implementation truly supports, such as `Iterable`, `Sequence`, or `Mapping`; for return values, prefer the concrete type you actually return.
 - Avoid `Any` as a convenience shortcut; use `object` when any value is accepted, and use `Any` only as an intentional escape hatch.
