@@ -1,5 +1,5 @@
 ## FastAPI Stack
-- Keep FastAPI endpoints thin and delegate business logic into services.
+- Keep FastAPI request handlers focused on transport concerns; use dependency injection, response models, lifespan, and HTTP exceptions intentionally.
 - Validate request and response contracts at the boundary layer.
 - Keep dependency injection focused on wiring, not business rules.
 - Use explicit response contracts via `response_model` or return typing for externally visible endpoints.

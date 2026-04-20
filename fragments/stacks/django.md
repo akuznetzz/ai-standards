@@ -11,11 +11,11 @@
 - When the codebase mixes patterns, keep new code consistent with the nearest surrounding context.
 
 ### Models
-- Keep models focused on schema, local invariants, simple validation, and model-adjacent behavior.
+- Keep models focused on schema, local invariants, validation, and model-adjacent behavior.
 - Use database constraints (`CheckConstraint`, `UniqueConstraint`) and indexes deliberately for integrity rules and query patterns the database can enforce.
 - Keep model methods small and local to the model's own invariants; move cross-aggregate orchestration out of models.
 - Move properties that span multiple relations or risk N+1 queries out of the model.
-- In Django, the ORM is the persistence abstraction; application code interacts with models through it.
+- Treat the ORM as the persistence abstraction.
 
 ### Signals
 - Use signals only for cross-cutting lifecycle events that must fire regardless of the entry point.
@@ -30,7 +30,7 @@
 ### Writes & Transactions
 - Use transactions deliberately around multi-step writes that must succeed or fail as one unit.
 - Validate and normalize user input through forms, serializers, or service boundaries before it reaches deeper layers.
-- Keep framework entry points thin and delegate business decisions to the chosen application layer.
+- Keep Django boundary code focused on framework concerns; move cross-aggregate business decisions into services or explicit orchestration.
 
 ### Security & Configuration
 - Prefer Django's built-in protections and conventions unless there is a documented reason to bypass them.
