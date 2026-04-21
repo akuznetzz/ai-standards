@@ -33,8 +33,8 @@
 - `project.version` в `pyproject.toml` описывает Python support tooling package, а не canonical release version репозитория `ai-standards`.
 - Меняйте `project.version` только тогда, когда сам Python support package действительно требует package-version bump, например из-за изменений скриптов или зависимостей.
 - Метаданные self-hosted манифеста хранятся в `ai.project.toml` в полях `ai_standards_version`, `project_version` и `project_release_date`.
-- Для preview, save и tag операций над release version в этом репозитории используйте `scripts/bump_version.py`.
-- `scripts/bump_version.py save` разрешён только на чистом git worktree.
-- `scripts/bump_version.py tag` разрешён только на чистом git worktree и только из ветки `main`.
+- Для preview, save и tag операций над release version в этом репозитории используйте `bump-version`.
+- `bump-version save` разрешён только на чистом git worktree.
+- `bump-version tag` разрешён только на чистом git worktree и только из ветки `main`.
 - Создание релизного тега остаётся отдельным шагом по отношению к сохранению версии и git commit.
 - Если merged change set меняет release version репозитория, соответствующий annotated release tag должен быть создан и запушен как обязательный follow-up шаг.

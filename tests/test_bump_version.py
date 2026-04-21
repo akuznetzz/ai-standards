@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import os
 import shutil
 import subprocess
-import sys
 from pathlib import Path
 
 from scripts.bump_version import (
@@ -31,11 +29,27 @@ def _init_demo_repo(tmp_path: Path) -> Path:
     (repo_root / "templates").mkdir(parents=True)
     (repo_root / "scripts").mkdir(parents=True)
 
+    (repo_root / ".gitignore").write_text(
+        ".venv/\n__pycache__/\n*.egg-info/\n",
+        encoding="utf-8",
+    )
+
     (repo_root / "pyproject.toml").write_text(
         (
             "[project]\n"
             'name = "demo-repo"\n'
             'version = "0.1.0"\n'
+            'dependencies = ["typer>=0.12.3,<1.0.0"]\n'
+            "\n"
+            "[project.scripts]\n"
+            'bump-version = "scripts.bump_version:main"\n'
+            "\n"
+            "[build-system]\n"
+            'requires = ["setuptools>=68", "wheel"]\n'
+            'build-backend = "setuptools.build_meta"\n'
+            "\n"
+            "[tool.setuptools.packages.find]\n"
+            'include = ["scripts*"]\n'
             "\n"
             "[tool.ai-standards]\n"
             'version = "0.1.0"\n'
@@ -102,6 +116,14 @@ def _init_demo_repo(tmp_path: Path) -> Path:
         repo_root / "scripts" / "bump_version.py",
     )
 
+    assert subprocess.run(
+        ["uv", "lock"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    ).returncode == 0
+
     assert _run_git(repo_root, "init", "-b", "main").returncode == 0
     assert _run_git(repo_root, "config", "user.name", "Codex Test").returncode == 0
     assert _run_git(repo_root, "config", "user.email", "codex@example.com").returncode == 0
@@ -157,16 +179,15 @@ def test_save_release_requires_clean_worktree(tmp_path: Path) -> None:
         raise AssertionError("Expected save_release to reject a dirty worktree")
 
 
-def test_save_command_runs_via_typer_cli(tmp_path: Path) -> None:
+def test_save_command_runs_via_uv_console_script(tmp_path: Path) -> None:
     repo_root = _init_demo_repo(tmp_path)
-    env = dict(os.environ)
-    env["PYTHONDONTWRITEBYTECODE"] = "1"
 
     result = subprocess.run(
         [
-            sys.executable,
-            "-m",
-            "scripts.bump_version",
+            "uv",
+            "run",
+            "--frozen",
+            "bump-version",
             "save",
             "--version",
             "1.1.0",
@@ -174,7 +195,6 @@ def test_save_command_runs_via_typer_cli(tmp_path: Path) -> None:
             "2026-04-16",
         ],
         cwd=repo_root,
-        env=env,
         capture_output=True,
         text=True,
         check=False,

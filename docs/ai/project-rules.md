@@ -33,8 +33,8 @@ Russian localized version: [project-rules.ru.md](project-rules.ru.md)
 - `project.version` in `pyproject.toml` describes the Python support tooling package, not the canonical release version of the `ai-standards` repository.
 - Change `project.version` only when the Python support package itself changes in a way that warrants a package-version bump, such as script or dependency changes.
 - Self-hosted manifest metadata lives in `ai.project.toml` under `ai_standards_version`, `project_version`, and `project_release_date`.
-- Use `scripts/bump_version.py` for release-version preview, save, and tag operations in this repository.
-- `scripts/bump_version.py save` is allowed only on a clean git worktree.
-- `scripts/bump_version.py tag` is allowed only on a clean git worktree and only from the `main` branch.
+- Use `bump-version` for release-version preview, save, and tag operations in this repository.
+- `bump-version save` is allowed only on a clean git worktree.
+- `bump-version tag` is allowed only on a clean git worktree and only from the `main` branch.
 - Release tagging remains a separate step from version saving and from git commits.
 - If a merged change set updates the repository release version, create and push the corresponding annotated release tag as the required follow-up step.

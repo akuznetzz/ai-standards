@@ -377,7 +377,7 @@ def tag() -> None:
     typer.echo(tag_name)
 
 
-if __name__ == "__main__":
+def main() -> None:
     try:
         if len(sys.argv) == 1:
             preview()
@@ -386,3 +386,7 @@ if __name__ == "__main__":
     except VersioningError as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(code=1) from error
+
+
+if __name__ == "__main__":
+    main()

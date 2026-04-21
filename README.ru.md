@@ -463,9 +463,9 @@ project_release_date = "YYYY-MM-DD"
 
 Для release workflow самого этого репозитория:
 
-- `rtk uv run python scripts/bump_version.py` показывает предлагаемые версию и дату релиза.
-- `rtk uv run python scripts/bump_version.py save --part minor` обновляет metadata релиза репозитория только на чистом рабочем дереве и не меняет версию Python support package.
-- `rtk uv run python scripts/bump_version.py tag` создаёт аннотированный тег только из `main` и только на чистом рабочем дереве.
+- `rtk uv run bump-version` показывает предлагаемые версию и дату релиза.
+- `rtk uv run bump-version save --part minor` обновляет metadata релиза репозитория только на чистом рабочем дереве и не меняет версию Python support package.
+- `rtk uv run bump-version tag` создаёт аннотированный тег только из `main` и только на чистом рабочем дереве.
 
 ## Текущие фрагменты стеков
 
