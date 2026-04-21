@@ -121,6 +121,20 @@ At minimum, stop when:
 
 Projects may add stricter local thresholds, but `ai-standards` should avoid promoting brittle numeric limits as shared defaults.
 
+## Local Checkpoints Inside A Slice
+
+Long autonomous work is not supposed to run as one blind stretch inside an approved slice.
+
+Add local checkpoints when the current slice contains risky implementation points such as:
+
+- contract-sensitive edits
+- state transitions
+- index or boundary logic
+- schema or data mapping
+- cross-boundary calls
+
+The slice should continue only while the next step still looks like a small coherent patch with targeted verification. If local fixes stop converging, or if the current slice reveals several unplanned hotspots, stop and either split the slice or ask for review.
+
 ## Sensitive Areas
 
 Do not allow long autonomous design decisions in these areas without explicit human approval:

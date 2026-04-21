@@ -45,6 +45,22 @@
 
 Такие приёмы иногда влияют на ответы отдельных моделей, но недостаточно устойчивы для repository-wide переиспользуемой политики.
 
+## Локальное рассуждение во время реализации
+
+`reasoning-hygiene` полезна не только в начале задачи. На нетривиальных задачах реализации она помогает агенту локально пересматривать предположения прямо во время написания текущего слайса.
+
+Используйте её, чтобы просить:
+
+- короткую локальную проверку перед рискованными правками
+- фокус на зонах высокой неопределённости вместо равномерных комментариев по всей задаче
+- targeted verification сразу после изменения, которое может повлиять на корректность
+
+Хорошие паттерны запроса:
+
+- `Implement only this slice. Before changing non-trivial logic, state the local invariant and the most likely failure mode.`
+- `After the patch, name the highest-risk fragment and the most targeted check for it.`
+- `Focus on the uncertain part of the implementation, not on a generic full-task explanation.`
+
 ## Когда её стоит включать
 
 Добавляйте `reasoning-hygiene`, когда проект регулярно использует агентов для:

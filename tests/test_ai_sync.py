@@ -13,8 +13,8 @@ from scripts.ai_sync import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CURRENT_AI_STANDARDS_VERSION = "1.4.0"
-CURRENT_RELEASE_DATE = "2026-04-20"
+CURRENT_AI_STANDARDS_VERSION = "1.5.0"
+CURRENT_RELEASE_DATE = "2026-04-21"
 MANIFEST_RELEASE_BLOCK = (
     f'ai_standards_version = "{CURRENT_AI_STANDARDS_VERSION}"\n'
     f'project_version = "{CURRENT_AI_STANDARDS_VERSION}"\n'
@@ -352,7 +352,7 @@ def test_vue_query_alias_can_be_rendered(tmp_path: Path) -> None:
 
     assert "## Vue Stack" in result.content
     assert "## TanStack Query Stack" in result.content
-    assert "Move reusable stateful logic into composables" in result.content
+    assert "derived view state and reusable logic" in result.content
     assert "Keep query keys stable, structured, and domain-meaningful" in result.content
 
 

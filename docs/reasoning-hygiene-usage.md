@@ -45,6 +45,22 @@ Do not treat the following as shared engineering standards:
 
 These tactics may influence some model outputs, but they are not durable enough for repository-wide reusable policy.
 
+## Local Reasoning During Implementation
+
+`reasoning-hygiene` is not only about the opening plan. On non-trivial implementation tasks, it also helps the agent re-evaluate locally while writing the current slice.
+
+Use it to ask for:
+
+- short local checks before risky edits
+- attention focused on high-uncertainty fragments instead of uniform commentary everywhere
+- targeted verification immediately after a change that may affect correctness
+
+Good prompt patterns:
+
+- `Implement only this slice. Before changing non-trivial logic, state the local invariant and the most likely failure mode.`
+- `After the patch, name the highest-risk fragment and the most targeted check for it.`
+- `Focus on the uncertain part of the implementation, not on a generic full-task explanation.`
+
 ## When To Enable It
 
 Add `reasoning-hygiene` when a project regularly uses agents for:
