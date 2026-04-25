@@ -12,6 +12,7 @@
 - [Использование Autonomy Boundaries в проекте](#использование-autonomy-boundaries-в-проекте)
 - [Использование Review Lenses в проекте](#использование-review-lenses-в-проекте)
 - [Использование Structured Artifacts в проекте](#использование-structured-artifacts-в-проекте)
+- [Использование Agent Usage Hygiene в проекте](#использование-agent-usage-hygiene-в-проекте)
 - [Порядок работы с проектом](#порядок-работы-с-проектом)
 - [Версионирование](#версионирование)
 - [Текущие фрагменты стеков](#текущие-фрагменты-стеков)
@@ -43,7 +44,7 @@ uv run ai-sync sync-templates --project-root /path/to/project
 Используются четыре слоя:
 
 - `fragments`: прямые базовые правила, которые должны включаться всегда.
-- `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `autonomy-boundaries`, `review-lenses` и `structured-artifacts`.
+- `features`: опциональные возможности вроде `conport`, `design-first-collaboration`, `reasoning-hygiene`, `autonomy-boundaries`, `review-lenses`, `structured-artifacts` и `agent-usage-hygiene`.
 - `stacks`: правила, зависящие от технологии или архитектурного стиля, например `layered-architecture`, `backend-layered-architecture`, `frontend-layered-architecture`, `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring` или `spring-data-jpa`.
 - `tooling.agents`: опциональные agent adapters вроде `codex` и `cursor` для управляемых локальных workflow templates.
 
@@ -67,6 +68,7 @@ features = [
   "reasoning-hygiene",
   "autonomy-boundaries",
   "structured-artifacts",
+  "agent-usage-hygiene",
 ]
 
 stacks = [
@@ -439,6 +441,29 @@ Constraints:
 - [templates/module-contract.md](templates/module-contract.md)
 - [templates/decision-record.md](templates/decision-record.md)
 - [templates/module-map.md](templates/module-map.md)
+
+## Использование Agent Usage Hygiene в проекте
+
+`agent-usage-hygiene` — это опциональная возможность для снижения лишнего agent usage за счёт фокусировки контекста, discovery и автономных слайсов.
+
+Используйте `agent-usage-hygiene`, когда проекту полезны переиспользуемые правила для:
+
+- targeted discovery перед широким чтением файлов
+- компактного scope и reviewable implementation slices
+- prompt-activated economy mode для usage-sensitive сессий
+- сохранения correctness и обязательной verification даже при запросе на экономию usage
+
+`ai-standards` должен хранить переиспользуемую policy:
+
+- usage economy — это context discipline, а не снижение engineering quality
+- широкое исследование должно иметь понятную причину
+- economy mode должен быть явным и обратимым
+- vendor-specific controls должны оставаться в local adapters или project overrides
+
+Подробная методика применения находится в:
+
+- английском руководстве: [docs/agent-usage-hygiene-usage.md](docs/agent-usage-hygiene-usage.md)
+- русском руководстве: [docs/agent-usage-hygiene-usage.ru.md](docs/agent-usage-hygiene-usage.ru.md)
 
 ## Порядок работы с проектом
 

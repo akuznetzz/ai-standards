@@ -12,6 +12,7 @@
 - [Using Autonomy Boundaries In a Project](#using-autonomy-boundaries-in-a-project)
 - [Using Review Lenses In a Project](#using-review-lenses-in-a-project)
 - [Using Structured Artifacts In a Project](#using-structured-artifacts-in-a-project)
+- [Using Agent Usage Hygiene In a Project](#using-agent-usage-hygiene-in-a-project)
 - [Project Flow](#project-flow)
 - [Versioning](#versioning)
 - [Current Stack Fragments](#current-stack-fragments)
@@ -43,7 +44,7 @@ uv run ai-sync sync-templates --project-root /path/to/project
 Use four layers:
 
 - `fragments`: direct core rules that should always be rendered.
-- `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `autonomy-boundaries`, `review-lenses`, and `structured-artifacts`.
+- `features`: optional capabilities such as `conport`, `design-first-collaboration`, `reasoning-hygiene`, `autonomy-boundaries`, `review-lenses`, `structured-artifacts`, and `agent-usage-hygiene`.
 - `stacks`: technology-specific or architecture-specific rules such as `layered-architecture`, `backend-layered-architecture`, `frontend-layered-architecture`, `typescript`, `python`, `fastapi`, `sqlalchemy`, `django`, `postgres`, `react`, `nextjs`, `tanstack-query`, `vue`, `nuxt`, `vue-query`, `vite`, `fsd`, `java`, `spring`, or `spring-data-jpa`.
 - `tooling.agents`: optional agent adapters such as `codex` and `cursor` for managed local workflow templates.
 
@@ -67,6 +68,7 @@ features = [
   "reasoning-hygiene",
   "autonomy-boundaries",
   "structured-artifacts",
+  "agent-usage-hygiene",
 ]
 
 stacks = [
@@ -443,6 +445,29 @@ Ready-to-copy downstream templates:
 - [templates/module-contract.md](templates/module-contract.md)
 - [templates/decision-record.md](templates/decision-record.md)
 - [templates/module-map.md](templates/module-map.md)
+
+## Using Agent Usage Hygiene In a Project
+
+`agent-usage-hygiene` is an optional feature for reducing avoidable agent usage by keeping context, exploration, and autonomous slices focused.
+
+Use `agent-usage-hygiene` when a project benefits from reusable rules for:
+
+- targeted discovery before broad file inspection
+- compact scope and reviewable implementation slices
+- prompt-activated economy mode for usage-sensitive sessions
+- preserving correctness and required verification even when the user asks to conserve usage
+
+`ai-standards` owns the reusable policy:
+
+- usage economy is context discipline, not lower engineering quality
+- broad exploration should have a clear reason
+- economy mode should be explicit and reversible
+- vendor-specific controls belong in local adapters or project overrides
+
+Detailed operational guidance lives in:
+
+- English guide: [docs/agent-usage-hygiene-usage.md](docs/agent-usage-hygiene-usage.md)
+- Russian guide: [docs/agent-usage-hygiene-usage.ru.md](docs/agent-usage-hygiene-usage.ru.md)
 
 ## Project Flow
 
